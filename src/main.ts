@@ -1,24 +1,23 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import TypeWriter from './TypeWriter'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const typrwriter = new TypeWriter(document.body, { loop: true });
+
+
+typrwriter
+  .typeString("Hello..")
+  .pauseFor(1000)
+  .typeString("\n\nfunction")
+  .deleteChars(7)
+  .typeString("const temp")
+  .pauseFor(150)
+  .deleteAll(10)
+  .typeString("Why is this so hard ?")
+  .pauseFor(1000)
+  .typeString("\n\nDoes everyone struggle this much ?")
+  .pauseFor(1000)
+  .typeString("\n\nThere has to be an easier way!")
+  .pauseFor(1000)
+  .deleteAll(10)
+  .start()
