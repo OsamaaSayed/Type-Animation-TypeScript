@@ -1,7 +1,6 @@
 type QueueItem = () => Promise<void>
 
 export default class TypeWriter {
-
     private queue: QueueItem[] = [];
     element: HTMLElement;
     loop: boolean;
@@ -19,54 +18,85 @@ export default class TypeWriter {
 
     typeString(text: string) {
 
-        this.queue.push(() => {
-            return new Promise((resolve, _) => {
-                //~ Add String To Screen
+        this.addToQueue((resolve) => {
+            //~ Add String To Screen
 
-                let i = 0;
-                const interval = setInterval(() => {
-                    this.element.append(text[i]);
-                    i++;
-                    if (i >= text.length) {
-                        clearInterval(interval);
-                        resolve();
-                    }
-                }, this.typingSpeed);
-            })
-        })
+            let i = 0;
+            const interval = setInterval(() => {
+                this.element.append(text[i]);
+                i++;
+                if (i >= text.length) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, this.typingSpeed);
+        });
 
         return this;
     }
 
 
     pauseFor(duration: number) {
-        console.log(duration);
+        this.addToQueue((resolve) => {
+            //~ Pause the string
+            setTimeout(resolve, duration);
+        });
+
 
         return this;
     }
 
 
     deleteChars(charsNumber: number) {
-        console.log(charsNumber);
+
+        this.addToQueue((resolve) => {
+            //~ delete number of chars
+
+            let i = 0;
+            const interval = setInterval(() => {
+                this.element.innerText = this.element.innerText.slice(0, this.element.innerText.length - 1)
+                i++;
+                if (i >= charsNumber) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, this.deletingSpeed);
+        });
 
         return this;
     }
 
 
     deleteAll(deleteSpeed = this.deletingSpeed) {
-        console.log(deleteSpeed);
+        this.addToQueue((resolve) => {
+            //~ delete all string
+
+            const interval = setInterval(() => {
+                this.element.innerText = this.element.innerText.slice(0, this.element.innerText.length - 1)
+                if (!this.element.innerText.length) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, deleteSpeed);
+        });
 
         return this;
     }
 
 
     async start() {
-
-        for (const callback of this.queue) {
-            await callback();
+        let cb = this.queue.shift();
+        while (cb != null) {
+            await cb();
+            if (this.loop) this.queue.push(cb);
+            cb = this.queue.shift();
         }
-
         return this;
+    }
+
+
+    private addToQueue(cb: (resolve: () => void) => void) {
+        this.queue.push(() => new Promise(cb))
     }
 
 }

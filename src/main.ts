@@ -2,22 +2,29 @@ import './style.css'
 import TypeWriter from './TypeWriter'
 
 
-const typrwriter = new TypeWriter(document.body, { loop: true });
-
+const typrwriter = new TypeWriter(
+  document.querySelector(".whitespace") as HTMLDivElement,
+  {
+    loop: true, typingSpeed: 100,
+    deletingSpeed: 100
+  }
+);
 
 typrwriter
-  .typeString("Hello..")
+  .typeString("Hello..👋")
   .pauseFor(1000)
-  .typeString("\n\nfunction")
-  .deleteChars(7)
-  .typeString("const temp")
+  .typeString("\n\nIam Osama 🥷")
+  .pauseFor(1000)
+  .deleteChars(13)
+  .typeString("\n\nHow are you..?")
   .pauseFor(150)
-  .deleteAll(10)
-  .typeString("Why is this so hard ?")
+  .deleteAll(50)
+  .typeString("I hope you are doing well 😍")
   .pauseFor(1000)
-  .typeString("\n\nDoes everyone struggle this much ?")
+  .typeString("\n\nThis is just a typing animation..💁‍♂️")
   .pauseFor(1000)
-  .typeString("\n\nThere has to be an easier way!")
+  .typeString("\n\nsee you 👋")
   .pauseFor(1000)
   .deleteAll(10)
   .start()
+  
